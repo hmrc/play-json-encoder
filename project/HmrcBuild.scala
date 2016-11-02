@@ -47,7 +47,9 @@ private object AppDependencies {
 
   val compile = Seq(
     "com.typesafe.play" %% "play" % PlayVersion.current,
-    "commons-io" % "commons-io" % "2.4"
+    "commons-io" % "commons-io" % "2.4",
+    "ch.qos.logback" % "logback-core" % "1.1.7",
+    "ch.qos.logback" % "logback-classic" % "1.1.7"
   )
 
   def apply() = compile
