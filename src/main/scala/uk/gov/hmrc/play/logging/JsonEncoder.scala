@@ -24,6 +24,7 @@ import java.net.InetAddress
 import org.apache.commons.lang3.time.FastDateFormat
 import org.apache.commons.io.IOUtils._
 import play.api.Play
+import scala.util.{Success, Try}
 
 class JsonEncoder extends EncoderBase[ILoggingEvent] {
 
@@ -31,11 +32,20 @@ class JsonEncoder extends EncoderBase[ILoggingEvent] {
 
   private val mapper = new ObjectMapper().configure(Feature.ESCAPE_NON_ASCII, true)
 
-  lazy val appName = Play.current.configuration.getString("appName").getOrElse("APP NAME NOT SET")
+  lazy val appName:String = Try{Play.current} match {
+    case Success(name) => name.toString
+    case _ => "APP NAME NOT SET"
+  }
 
-  private lazy val dateFormat = FastDateFormat.getInstance(
-    Play.current.configuration.getString("logger.json.dateformat").getOrElse("yyyy-MM-dd HH:mm:ss.SSSZZ")
-  )
+  private val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZZ"
+
+  private lazy val dateFormat = {
+    val dformat = Try{Play.current.configuration.getString("logger.json.dateformat").getOrElse(DATE_FORMAT)} match {
+      case Success(date) => date.toString
+      case _ => DATE_FORMAT
+    }
+    FastDateFormat.getInstance( dformat )
+  }
 
   override def doEncode(event: ILoggingEvent) {
     val eventNode = mapper.createObjectNode
