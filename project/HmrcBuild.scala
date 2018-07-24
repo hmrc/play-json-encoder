@@ -30,27 +30,13 @@ object HmrcBuild extends Build {
   lazy val microservice = Project(appName, file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
     .settings(
-      scalaVersion := "2.11.7",
-      libraryDependencies ++= AppDependencies(),
-      crossScalaVersions := Seq("2.11.7"),
-      resolvers := Seq(
-        Resolver.bintrayRepo("hmrc", "releases"),
-        "typesafe-releases" at "http://repo.typesafe.com/typesafe/releases/"
+      scalaVersion := "2.11.12",
+      libraryDependencies ++= Seq(
+        "com.typesafe.play" %% "play" % "2.5.18" % "provided",
+        "commons-io" % "commons-io" % "2.6",
+        "ch.qos.logback" % "logback-core" % "1.1.11",
+        "ch.qos.logback" % "logback-classic" % "1.1.11"
       )
     )
     .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
-}
-
-private object AppDependencies {
-
-  import play.core.PlayVersion
-
-  val compile = Seq(
-    "com.typesafe.play" %% "play" % PlayVersion.current,
-    "commons-io" % "commons-io" % "2.4",
-    "ch.qos.logback" % "logback-core" % "1.1.7",
-    "ch.qos.logback" % "logback-classic" % "1.1.7"
-  )
-
-  def apply() = compile
 }
