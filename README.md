@@ -1,6 +1,6 @@
 DEPRECATED
 ================
-Use https://github.com/hmrc/logback-json-logger 
+Use https://github.com/hmrc/logback-json-logger instead
 
 play-json-logger
 ================
